@@ -59,7 +59,7 @@
   text-decoration: none;
 }
 
-/* Increase specificity and use !important for text alignment */
+/* Text alignment - CSS classes */
 .rich-text-content .text-left,
 .rich-text-content p.text-left,
 .rich-text-content div.text-left { text-align: left !important; }
@@ -82,13 +82,25 @@
   -ms-hyphens: auto;
 }
 
-/* Paragraph font size */
-.rich-text-content p {
-  font-size: 2.125em; /* Adjust the size as needed */
+/* Text alignment - inline styles (Lexical often uses these) */
+.rich-text-content [style*="text-align: left"],
+.rich-text-content [style*="text-align:left"] { text-align: left !important; }
+
+.rich-text-content [style*="text-align: center"],
+.rich-text-content [style*="text-align:center"] { text-align: center !important; }
+
+.rich-text-content [style*="text-align: right"],
+.rich-text-content [style*="text-align:right"] { text-align: right !important; }
+
+.rich-text-content [style*="text-align: justify"],
+.rich-text-content [style*="text-align:justify"] { 
+  text-align: justify !important;
+  hyphens: auto;
 }
 
-/* Additional styling for better readability */
+/* Paragraph styling */
 .rich-text-content p {
-  line-height: 2.6; /* Improve readability by adjusting line height */
-  margin-bottom: 2em; /* Add space below paragraphs */
+  font-size: 2.125em;
+  line-height: 2.6;
+  margin-bottom: 2em;
 }

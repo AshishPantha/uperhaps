@@ -2,7 +2,7 @@ import { CollectionConfig } from 'payload/types';
 import { PRODUCT_CATEGORIES, PRODUCT_THEMES } from '../../config';
 import { Product } from '../../payload-types';
 import { BeforeChangeHook } from 'payload/dist/collections/config/types';
-import { lexicalEditor, HTMLConverterFeature } from '@payloadcms/richtext-lexical';
+import { lexicalEditor, HTMLConverterFeature, AlignFeature } from '@payloadcms/richtext-lexical';
 
 const addUser: BeforeChangeHook<Product> = async ({ req, data }) => {
   const user = req.user;
@@ -10,7 +10,6 @@ const addUser: BeforeChangeHook<Product> = async ({ req, data }) => {
 };
 
 const updateFieldsBeforeChange: BeforeChangeHook<Product> = async ({ data, operation }) => {
-  // Set or update publishedDate
   if (operation === 'create' || !data.publishedDate) {
     data.publishedDate = new Date().toISOString();
   }
@@ -83,6 +82,7 @@ export const Products: CollectionConfig = {
         features: ({ defaultFeatures }) => [
           ...defaultFeatures,
           HTMLConverterFeature({}),
+          AlignFeature(),
         ],
       }),
     },

@@ -1,0 +1,41 @@
+.rich-text-content h1 { font-size: 2.5em !important; text-align: center !important; }
+.rich-text-content h2 { font-size: 2em !important; }
+.rich-text-content h3 { font-size: 1.75em !important; }
+.rich-text-content h4 { font-size: 1.5em !important; }
+.rich-text-content h5 { font-size: 1.25em !important; }
+.rich-text-content h6 { font-size: 1em !important; }
+
+
+/* Increase specificity and use !important for text alignment */
+.rich-text-content .text-left,
+.rich-text-content p.text-left,
+.rich-text-content div.text-left { text-align: left !important; }
+
+.rich-text-content .text-center,
+.rich-text-content p.text-center,
+.rich-text-content div.text-center { text-align: center !important; }
+
+.rich-text-content .text-right,
+.rich-text-content p.text-right,
+.rich-text-content div.text-right { text-align: right !important; }
+
+.rich-text-content .text-justify,
+.rich-text-content p.text-justify,
+.rich-text-content div.text-justify { 
+  text-align: justify !important;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+/* Paragraph font size */
+.rich-text-content p {
+  font-size: 2.125em; /* Adjust the size as needed */
+}
+
+/* Additional styling for better readability */
+.rich-text-content p {
+  line-height: 2.6; /* Improve readability by adjusting line height */
+  margin-bottom: 2em; /* Add space below paragraphs */
+}

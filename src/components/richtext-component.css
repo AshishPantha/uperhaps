@@ -5,6 +5,59 @@
 .rich-text-content h5 { font-size: 1.25em !important; }
 .rich-text-content h6 { font-size: 1em !important; }
 
+.rich-text-content strong,
+.rich-text-content b { font-weight: 700 !important; }
+
+.rich-text-content em,
+.rich-text-content i { font-style: italic !important; }
+
+.rich-text-content u { text-decoration: underline !important; }
+
+.rich-text-content s,
+.rich-text-content strike,
+.rich-text-content del { text-decoration: line-through !important; }
+
+.rich-text-content code {
+  font-family: monospace;
+  background-color: #f4f4f4;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.rich-text-content pre {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+.rich-text-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.rich-text-content ul,
+.rich-text-content ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.rich-text-content li {
+  margin-bottom: 0.5em;
+}
+
+.rich-text-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.rich-text-content a:hover {
+  text-decoration: none;
+}
 
 /* Increase specificity and use !important for text alignment */
 .rich-text-content .text-left,

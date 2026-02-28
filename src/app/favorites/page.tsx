@@ -12,7 +12,6 @@ import { useEffect, useState } from 'react'
 import StyledProductDescription from '@/components/ui/styledPD'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ReadingRecommendations from '@/components/ReadingR'
-import EnhancedHeading from '@/components/EnhancedHeading'
 
 const Page = () => {
   const { items, removeItem, validateItems } = useCart()
@@ -49,8 +48,11 @@ const Page = () => {
   return (
     <MaxWidthWrapper>
       <div className='bg-transparent'>
-        <EnhancedHeading />
-        <div className='px-4 py-16 sm:px-6 lg:px-8'>
+        <div className='py-8'>
+          <h1 className='text-4xl font-bold text-gray-900'>Reading List</h1>
+          <p className='text-muted-foreground mt-2'>Your personal collection of literary works</p>
+        </div>
+        <div className='px-4 sm:px-6 lg:px-8'>
           <div className='flex flex-col'>
             <br />
             {/* Main content area */}
@@ -65,7 +67,7 @@ const Page = () => {
                       alt='empty shopping cart hippo'
                     />
                   </div>
-                  <h3 className='font-semibold text-2xl'>You have no favorites yet 😢</h3>
+                  <h3 className='font-semibold text-2xl'>You have no bookmarks yet 😢</h3>
                   <p className='text-muted-foreground text-center'>
                     Whoops! Nothing to show here yet.
                   </p>

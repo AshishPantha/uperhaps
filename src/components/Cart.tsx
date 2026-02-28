@@ -119,14 +119,14 @@ const Cart = () => {
           </span>
         </div>
         <span className="absolute left-1/2 -translate-x-1/2 top-full mt-2 text-xs font-medium text-white bg-gray-800 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-          Favourites
+          Bookmarks
            {/* ({itemCount}) */}
         </span>
       </SheetTrigger>
       
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg bg-gradient-to-r from-white to-[#abbaab] bg-opacity-50">
         <SheetHeader className="space-y-2.5 pr-6">
-          <SheetTitle>Favourites
+          <SheetTitle>Bookmarks
             {/* this is inside cart lol */}
              ({itemCount}) 
              </SheetTitle>
@@ -157,7 +157,7 @@ const Cart = () => {
                     })}
                   >
                     <Star className="w-4 h-4 mr-2" />
-                    View All Favorites
+                    View All Bookmarks
                   </Link>
                 </SheetClose>
               </SheetFooter>
@@ -176,7 +176,7 @@ const Cart = () => {
               />
             </div> 
             <div className="text-xl font-semibold">
-              Your favourites list is empty
+              Your bookmarks list is empty
             </div>
             <SheetClose asChild>
               <Link 

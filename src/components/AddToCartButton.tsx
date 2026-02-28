@@ -6,7 +6,7 @@ import { useCart } from '@/hooks/use-cart'
 import { Product } from '@/payload-types'
 import { Star } from 'lucide-react'
 
-const AddToFavoritesButton = ({
+const AddToBookmarksButton = ({
   product,
 }: {
   product: Product
@@ -25,13 +25,13 @@ const AddToFavoritesButton = ({
     setIsLoading(true)
     if (isInFavorites) {
       removeItem(product.id)
-      setActionText('Removed from Favorites!')
+      setActionText('Removed from Bookmarks!')
     } else {
       await validateItems() // Validate items before adding
       const isValid = items.some(item => item.product.id === product.id)
       if (!isValid) {
         addItem(product)
-        setActionText('Added to Favorites!')
+        setActionText('Added to Bookmarks!')
       } else {
         setActionText('Product no longer available')
       }
@@ -61,10 +61,10 @@ const AddToFavoritesButton = ({
       <span className='absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100'>
         {isSuccess
           ? actionText
-          : (isInFavorites ? 'Remove from Favorites' : 'Add to Favorites')}
+          : (isInFavorites ? 'Remove Bookmark' : 'Add Bookmark')}
       </span>
     </Button>
   )
 }
 
-export default AddToFavoritesButton
+export default AddToBookmarksButton

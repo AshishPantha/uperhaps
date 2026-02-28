@@ -2,7 +2,7 @@
 
 ## Current Tasks
 
-- [ ] Rename Favourites to Reading Lists (UI + code references)
+- [x] Rename Favourites to Reading Lists (button → Bookmark, page title → Reading List)
 
 ## Investigation Results (Completed)
 

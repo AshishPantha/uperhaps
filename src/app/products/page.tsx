@@ -18,10 +18,18 @@ const ProductsPage = () => {
 
   const sort = parse(searchParams.get('sort'))
   const category = parse(searchParams.get('category'))
+  const author = parse(searchParams.get('author'))
+  const theme = parse(searchParams.get('theme'))
 
   const label = PRODUCT_CATEGORIES.find(
     ({ value }) => value === category
   )?.label
+
+  const getTitle = () => {
+    if (author) return `Works by ${author}`
+    if (theme) return `Contents about "${theme}"`
+    return label ?? 'Browse digital collections'
+  }
 
   useEffect(() => {
     // Force re-render of ProductReel when searchParams change
@@ -32,9 +40,11 @@ const ProductsPage = () => {
     <MaxWidthWrapper>
       <ProductReel
         key={key}
-        title={label ?? 'Browse digital collections'}
+        title={getTitle()}
         query={{
           category,
+          author,
+          theme,
           limit: 40,
           sort:
             sort === 'recent' || sort === 'oldest'

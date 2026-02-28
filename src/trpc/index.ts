@@ -19,11 +19,11 @@ export const appRouter = router({
     )
     .query(async ({ input }) => {
       const { query, cursor } = input;
-      const { sort, limit = 10, excludeId, ...queryOpts } = query; // Default limit to 10 if undefined
+      const { sort, limit = 10, excludeId, author, theme, ...queryOpts } = query; // Default limit to 10 if undefined
 
       const payload = await getPayloadClient();
 
-      const parsedQueryOpts: Record<string, { equals: string }> = {};
+      const parsedQueryOpts: Record<string, { equals: string } | { contains: string }> = {};
       Object.entries(queryOpts).forEach(([key, value]) => {
         parsedQueryOpts[key] = {
           equals: value,
@@ -48,21 +48,37 @@ export const appRouter = router({
           break;
       }
 
+      const whereClause: Record<string, any> = {
+        approvedForSale: {
+          equals: 'approved',
+        },
+        ...parsedQueryOpts,
+        ...(excludeId
+          ? {
+              id: {
+                not_equals: excludeId,
+              },
+            }
+          : {}),
+        ...(author
+          ? {
+              author: {
+                equals: author,
+              },
+            }
+          : {}),
+        ...(theme
+          ? {
+              themes: {
+                contains: theme,
+              },
+            }
+          : {}),
+      };
+
       const { docs: items, hasNextPage, nextPage } = await payload.find({
         collection: 'products',
-        where: {
-          approvedForSale: {
-            equals: 'approved',
-          },
-          ...parsedQueryOpts,
-          ...(excludeId
-            ? {
-                id: {
-                  not_equals: excludeId,
-                },
-              }
-            : {}),
-        },
+        where: whereClause,
         sort: sortOption,
         depth: 1,
         limit: limit * 2, // Fetch more items than needed

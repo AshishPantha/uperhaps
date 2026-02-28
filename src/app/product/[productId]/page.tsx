@@ -27,8 +27,13 @@ interface Product {
   themes: string[];
   excerpt: string;
   publishedDate: string;
-  descriptionWordCount: number; // Add this
 }
+
+const getWordCount = (html: string): number => {
+  if (!html) return 0;
+  const text = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  return text.split(' ').filter(word => word.length > 0).length;
+};
 
 interface PageProps {
   params: {
@@ -72,6 +77,8 @@ const Page = async ({ params }: PageProps) => {
     ({value}) => value === product.category
   )?.label
 
+  const wordCount = getWordCount(product.description_html as string);
+
   // to view image 
   const validUrls = (product.images as Array<{ image: string | { url: string } }>).map(({ image }) =>
     typeof image === 'string' ? image : image.url
@@ -99,7 +106,7 @@ const Page = async ({ params }: PageProps) => {
               context={product.context as string}
               publishedDate={product.publishedDate as string}
               product={product} 
-              descriptionWordCount={product.descriptionWordCount as number || 0}
+              wordCount={wordCount}
             />
             </div>
           </div>

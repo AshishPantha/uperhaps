@@ -2,6 +2,7 @@
 import { ChevronDown, BookOpen, Feather, Heart, Quote, PenSquare } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 import AddToCartButton from '@/components/AddToCartButton'
+import Link from 'next/link'
 
 interface ContentContextButtonProps {
   name?: string;
@@ -11,7 +12,7 @@ interface ContentContextButtonProps {
   excerpt?: string;
   context?: string;
   publishedDate?: string;
-  descriptionWordCount?: number;
+  wordCount?: number;
   product?: any;
 
 }
@@ -38,13 +39,13 @@ const ContentContextButton = ({
   excerpt = 'No excerpt available',
   context = '',
   publishedDate = '',
-  descriptionWordCount = 0,
+  wordCount = 0,
   product
 }: ContentContextButtonProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const displayWordCount = descriptionWordCount || 0;  // Ensure we always have a number
+  const displayWordCount = wordCount;  // Ensure we always have a number
 
   useEffect(() => {
     const handleResize = () => {
@@ -129,28 +130,31 @@ const ContentContextButton = ({
                     <BookOpen className="h-4 w-4" />
                     <span className="text-sm">{category}</span>
                   </div>
-                  {/* <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
                                 bg-gray-800 text-white text-xs rounded py-1 px-2 mb-1
                                 opacity-0 group-hover:opacity-100 transition-opacity duration-300 
                                 whitespace-nowrap pointer-events-none">
                     Category
-                  </div> */}
+                  </div>
                 </div>
 
                 <div className="group relative">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40
-                                text-gray-600 hover:text-green-800 hover:bg-white/50 
-                                transition-all duration-200 shadow-sm
-                                hover:shadow-md hover:scale-105">
+                  <Link 
+                    href={`/products?author=${encodeURIComponent(author)}`}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/40
+                                  text-gray-600 hover:text-green-800 hover:bg-white/50 
+                                  transition-all duration-200 shadow-sm
+                                  hover:shadow-md hover:scale-105"
+                  >
                     {/* <Heart className="h-4 w-4" /> */}
                     <span className="text-sm"> ©{author}</span>
-                  </div>
-                  {/* <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
+                  </Link>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 
                                 bg-gray-800 text-white text-xs rounded py-1 px-2 mb-1
                                 opacity-0 group-hover:opacity-100 transition-opacity duration-300 
                                 whitespace-nowrap pointer-events-none">
-                    Author
-                  </div> */}
+                    Author - Click to see more
+                  </div>
                 </div>
 
                 {displayWordCount > 0 && (
@@ -168,14 +172,15 @@ const ContentContextButton = ({
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {themes.map((theme, index) => (
-                    <span
+                    <Link
                       key={`${theme}-${index}`}
+                      href={`/products?theme=${encodeURIComponent(theme)}`}
                       className="px-3 py-1.5 text-sm rounded-full bg-white/40 text-gray-600
                                hover:text-green-800 hover:bg-white/50 transition-all duration-200 
                                cursor-pointer shadow-sm hover:shadow-md hover:scale-105"
                     >
                       {theme}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -194,7 +199,7 @@ const ContentContextButton = ({
                 </div>
               )}
                 
-                {/* {displayWordCount > 0 && (
+                {displayWordCount > 0 && (
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           <PenSquare className="h-4 w-4 text-gray-600" />
@@ -206,7 +211,7 @@ const ContentContextButton = ({
           {displayWordCount.toLocaleString()} words
         </div>
       </div>
-    )} */}
+    )}
               {context && (
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">

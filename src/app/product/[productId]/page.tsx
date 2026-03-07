@@ -14,6 +14,7 @@ import StyledProductDescription from '@/components/ui/styledPD'
 import ElegantBreadcrumbs from '@/components/ElegantBreadcrums'
 import fetch from 'node-fetch';
 import ContentContextButton from '@/components/ContentContextButton'
+import AnalyticsTracker from '@/components/AnalyticsTracker'
 
 interface Product {
   id: string;
@@ -87,6 +88,7 @@ const Page = async ({ params }: PageProps) => {
 
     return (
       <MaxWidthWrapper className='bg-transparent'>
+        <AnalyticsTracker productId={productId} />
         <div className='bg-transparent'>
           {/* Navigation Container */}
           <div className="flex justify-between items-center">

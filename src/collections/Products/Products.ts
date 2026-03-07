@@ -181,5 +181,55 @@ export const Products: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'analytics',
+      type: 'group',
+      label: '📊 Analytics',
+      admin: {
+        description: 'View how your content is performing',
+      },
+      fields: [
+        {
+          name: 'totalViews',
+          type: 'number',
+          label: 'Total Views',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'uniqueViews',
+          type: 'number',
+          label: 'Unique Visitors',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'readCount',
+          type: 'number',
+          label: 'Times Read',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'completionCount',
+          type: 'number',
+          label: 'Completions',
+          admin: {
+            readOnly: true,
+          },
+        },
+        {
+          name: 'lastUpdated',
+          type: 'date',
+          label: 'Last Updated',
+          admin: {
+            readOnly: true,
+          },
+        },
+      ],
+    },
   ],
 };

@@ -3,9 +3,121 @@ import { publicProcedure, router } from './trpc';
 import { QueryValidator } from '../lib/validators/query-validator';
 import { getPayloadClient } from '../get-payload';
 import { authRouter } from './auth-router';
+import { TRPCError } from '@trpc/server';
 
 export const appRouter = router({
   auth: authRouter,
+
+  trackView: publicProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+        sessionId: z.string(),
+        eventType: z.enum(['view', 'read', 'complete']).default('view'),
+        referrer: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const payload = await getPayloadClient();
+        
+        const headers = ctx.req.headers;
+        const userAgent = typeof headers['user-agent'] === 'string' ? headers['user-agent'] : undefined;
+        
+        await payload.create({
+          collection: 'analytics',
+          data: {
+            product: input.productId,
+            sessionId: input.sessionId,
+            eventType: input.eventType,
+            referrer: input.referrer,
+            userAgent,
+          },
+        });
+
+        return { success: true };
+      } catch (error) {
+        console.error('Analytics trackView error:', error);
+        throw error;
+      }
+    }),
+
+  getProductAnalytics: publicProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const payload = await getPayloadClient();
+      
+      const [totalViews, uniqueViews, readEvents, completeEvents] = await Promise.all([
+        payload.count({
+          collection: 'analytics',
+          where: {
+            product: {
+              equals: input.productId,
+            },
+            eventType: {
+              equals: 'view',
+            },
+          },
+        }),
+        payload.find({
+          collection: 'analytics',
+          where: {
+            product: {
+              equals: input.productId,
+            },
+          },
+          limit: 0,
+        }).then((res) => new Set(res.docs.map((d: any) => d.sessionId)).size),
+        payload.count({
+          collection: 'analytics',
+          where: {
+            product: {
+              equals: input.productId,
+            },
+            eventType: {
+              equals: 'read',
+            },
+          },
+        }),
+        payload.count({
+          collection: 'analytics',
+          where: {
+            product: {
+              equals: input.productId,
+            },
+            eventType: {
+              equals: 'complete',
+            },
+          },
+        }),
+      ]);
+
+      const recentViews = await payload.find({
+        collection: 'analytics',
+        where: {
+          product: {
+            equals: input.productId,
+          },
+          eventType: {
+            equals: 'view',
+          },
+        },
+        sort: '-createdAt',
+        limit: 10,
+      });
+
+      return {
+        totalViews,
+        uniqueViews,
+        readEvents,
+        completeEvents,
+        recentViews: recentViews.docs,
+      };
+    }),
 
   getInfiniteProducts: publicProcedure
     .input(

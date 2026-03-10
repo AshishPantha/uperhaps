@@ -2,12 +2,13 @@ import { User } from '@/payload-types'
 import { ExpressContext } from '@/server'
 import { TRPCError, initTRPC } from '@trpc/server'
 import { PayloadRequest } from 'payload/types'
+import { IncomingMessage } from 'http'
 
 const t = initTRPC.context<ExpressContext>().create()
 const middleware = t.middleware
 
 const isAuth = middleware(async ({ ctx, next }) => {
-  const req = ctx.req as PayloadRequest
+  const req = ctx.req as IncomingMessage & { user?: User | null }
 
   const { user } = req as { user: User | null }
 

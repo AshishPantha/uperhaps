@@ -1,7 +1,7 @@
 
 import ImageSlider from '@/components/ImageSlider'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import ProductReel from '@/components/ProductReel'
+import RecommendedReel from '@/components/RecommendedReel'
 import { PRODUCT_CATEGORIES } from '@/config'
 import { getPayloadClient } from '@/get-payload'
 
@@ -14,6 +14,7 @@ import StyledProductDescription from '@/components/ui/styledPD'
 import ElegantBreadcrumbs from '@/components/ElegantBreadcrums'
 import fetch from 'node-fetch';
 import ContentContextButton from '@/components/ContentContextButton'
+import { ContentViewTracker } from '@/components/ContentViewTracker'
 
 interface Product {
   id: string;
@@ -39,15 +40,6 @@ interface PageProps {
   params: {
     productId: string
   };
-}
-
-// Add subtitle to ProductReelProps interface
-interface ProductReelProps {
-  href: string;
-  query: { category: string; limit: number; };
-  title: string;
-  isMainPage: boolean;
-  subtitle: string; // {{ edit_1 }} Ensure this is defined
 }
 
 // this is to get product access from backend reyy 
@@ -87,6 +79,7 @@ const Page = async ({ params }: PageProps) => {
 
     return (
       <MaxWidthWrapper className='bg-transparent'>
+        <ContentViewTracker productId={productId} />
         <div className='bg-transparent'>
           {/* Navigation Container */}
           <div className="flex justify-between items-center">
@@ -161,15 +154,12 @@ const Page = async ({ params }: PageProps) => {
 
     </div>
 
-    {/* Similar Products */}
-    <ProductReel
-      href='/products'
-      query={{ category: product.category as string, limit: 4 ,
-        excludeId: productId,
-      }}
-      title={`Similar ${label}`}
-      subtitle={`Browse similar contents like '${product.name}'`} // {{ edit_2 }}
-      showSorting={false} 
+    {/* Recommended by context, themes, and genre */}
+    <RecommendedReel
+      productId={productId}
+      limit={8}
+      title="More like this"
+      subtitle="Recommended based on author, themes, and genre"
     />
   {/* </div> */}
 </MaxWidthWrapper>

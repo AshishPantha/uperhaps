@@ -11,6 +11,7 @@ export interface Config {
     users: User;
     products: Product;
     media: Media;
+    content_analytics: ContentAnalytic;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -142,6 +143,17 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content_analytics".
+ */
+export interface ContentAnalytic {
+  id: string;
+  product: string | Product;
+  eventType: 'view';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
@@ -177,5 +189,5 @@ export interface PayloadMigration {
 
 
 declare module 'payload' {
-  // export interface GeneratedTypes extends Config {}
+  export interface GeneratedTypes extends Config {}
 }

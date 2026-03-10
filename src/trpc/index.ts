@@ -15,14 +15,20 @@ export const appRouter = router({
         sessionId: z.string(),
         eventType: z.enum(['view', 'read', 'complete']).default('view'),
         referrer: z.string().optional(),
+        userAgent: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
       try {
         const payload = await getPayloadClient();
         
-        const headers = ctx.req.headers;
-        const userAgent = typeof headers['user-agent'] === 'string' ? headers['user-agent'] : undefined;
+        const headers = ctx?.req?.headers as Record<string, string | string[] | undefined> | undefined
+        const userAgent =
+          (typeof headers?.['user-agent'] === 'string'
+            ? headers?.['user-agent']
+            : Array.isArray(headers?.['user-agent'])
+              ? headers?.['user-agent'][0]
+              : undefined) || input.userAgent
         
         await payload.create({
           collection: 'analytics',
@@ -34,6 +40,58 @@ export const appRouter = router({
             userAgent,
           },
         });
+
+        const allEvents = await payload.find({
+          collection: 'analytics',
+          where: {
+            product: { equals: input.productId },
+          },
+          limit: 0,
+        })
+
+        const uniqueSessions = new Set(allEvents.docs.map((d: any) => d.sessionId)).size
+        const totalViews = allEvents.docs.filter((d: any) => d.eventType === 'view').length
+        const readCount = allEvents.docs.filter((d: any) => d.eventType === 'read').length
+        const completionCount = allEvents.docs.filter((d: any) => d.eventType === 'complete').length
+        const lastUpdated = new Date().toISOString()
+
+        const existing = await payload.find({
+          collection: 'content-analytics',
+          where: {
+            product: { equals: input.productId },
+          },
+          limit: 1,
+          overrideAccess: true,
+        })
+
+        if (existing.docs.length > 0) {
+          await payload.update({
+            collection: 'content-analytics',
+            id: existing.docs[0].id,
+            data: {
+              product: input.productId,
+              totalViews,
+              uniqueViews: uniqueSessions,
+              readCount,
+              completionCount,
+              lastUpdated,
+            },
+            overrideAccess: true,
+          })
+        } else {
+          await payload.create({
+            collection: 'content-analytics',
+            data: {
+              product: input.productId,
+              totalViews,
+              uniqueViews: uniqueSessions,
+              readCount,
+              completionCount,
+              lastUpdated,
+            },
+            overrideAccess: true,
+          })
+        }
 
         return { success: true };
       } catch (error) {

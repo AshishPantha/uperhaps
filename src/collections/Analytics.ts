@@ -2,50 +2,75 @@ import { CollectionConfig } from 'payload/types';
 import { AfterChangeHook } from 'payload/dist/collections/config/types';
 
 const updateProductStats: AfterChangeHook = async ({ req, doc, operation }) => {
-  if (operation === 'create' && doc.product) {
-    const payload = req.payload;
-    
-    let productId: string;
-    if (typeof doc.product === 'string') {
-      productId = doc.product;
-    } else if (doc.product && typeof doc.product === 'object' && 'value' in doc.product) {
-      productId = (doc.product as { value: string }).value;
-    } else {
-      return;
-    }
-    
-    const allEvents = await payload.find({
-      collection: 'analytics',
+  if (operation !== 'create' || !doc.product) return
+
+  const payload = req.payload
+
+  let productId: string
+  if (typeof doc.product === 'string') {
+    productId = doc.product
+  } else if (doc.product && typeof doc.product === 'object' && 'value' in doc.product) {
+    productId = (doc.product as { value: string }).value
+  } else {
+    return
+  }
+
+  const allEvents = await payload.find({
+    collection: 'analytics',
+    where: {
+      product: { equals: productId },
+    },
+    limit: 0,
+  })
+
+  const uniqueSessions = new Set(allEvents.docs.map((d: any) => d.sessionId)).size
+  const totalViews = allEvents.docs.filter((d: any) => d.eventType === 'view').length
+  const readCount = allEvents.docs.filter((d: any) => d.eventType === 'read').length
+  const completionCount = allEvents.docs.filter((d: any) => d.eventType === 'complete').length
+  const lastUpdated = new Date().toISOString()
+
+  try {
+    const existing = await payload.find({
+      collection: 'content-analytics',
       where: {
         product: { equals: productId },
       },
-      limit: 0,
-    });
+      limit: 1,
+      overrideAccess: true,
+    })
 
-    const uniqueSessions = new Set(allEvents.docs.map((d: any) => d.sessionId)).size;
-    const totalViews = allEvents.docs.filter((d: any) => d.eventType === 'view').length;
-    const readCount = allEvents.docs.filter((d: any) => d.eventType === 'read').length;
-    const completionCount = allEvents.docs.filter((d: any) => d.eventType === 'complete').length;
-
-    try {
+    if (existing.docs.length > 0) {
       await payload.update({
-        collection: 'products',
-        id: productId,
+        collection: 'content-analytics',
+        id: existing.docs[0].id,
         data: {
-          analytics: {
-            totalViews,
-            uniqueViews: uniqueSessions,
-            readCount,
-            completionCount,
-            lastUpdated: new Date().toISOString(),
-          },
+          product: productId,
+          totalViews,
+          uniqueViews: uniqueSessions,
+          readCount,
+          completionCount,
+          lastUpdated,
         },
-      });
-    } catch (err) {
-      console.error('Failed to update product analytics:', err);
+        overrideAccess: true,
+      })
+    } else {
+      await payload.create({
+        collection: 'content-analytics',
+        data: {
+          product: productId,
+          totalViews,
+          uniqueViews: uniqueSessions,
+          readCount,
+          completionCount,
+          lastUpdated,
+        },
+        overrideAccess: true,
+      })
     }
+  } catch (err) {
+    console.error('Failed to update content analytics:', err)
   }
-};
+}
 
 export const Analytics: CollectionConfig = {
   slug: 'analytics',

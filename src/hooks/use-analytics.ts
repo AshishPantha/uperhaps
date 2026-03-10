@@ -56,6 +56,9 @@ export function useTrackView(productId: string) {
       productId,
       sessionId,
       eventType: 'view',
+      referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+      userAgent:
+        typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
     })
   }, [productId])
 }
@@ -75,6 +78,9 @@ export function useTrackRead(productId: string) {
       productId,
       sessionId,
       eventType: 'read',
+      referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+      userAgent:
+        typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
     })
   }
 }
@@ -94,6 +100,9 @@ export function useTrackComplete(productId: string) {
       productId,
       sessionId,
       eventType: 'complete',
+      referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+      userAgent:
+        typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
     })
   }
 }

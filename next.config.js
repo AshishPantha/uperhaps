@@ -8,7 +8,7 @@ const nextConfig = {
           },
           {
           protocol: "https",
-          hostname: "poetry-web2.onrender.com",
+          hostname: "uperhaps.onrender.com",
         },
       ],
     },

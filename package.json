@@ -10,7 +10,7 @@
     "build:next": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NEXT_BUILD=true node dist/server.js",
     "build": "cross-env NODE_ENV=production yarn build:payload && yarn build:server && yarn copyfiles && yarn build:next",
     "start": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/server.js",
-    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/ && node -e \"const fs=require('fs');const p='dist/components/emails';if(fs.existsSync(p))fs.readdirSync(p).forEach(f=>f.endsWith('.jsx')&&fs.copyFileSync(p+'/'+f,p+'/'+f.replace('.jsx','.js')))\"",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.{html,css,scss,ttf,woff,woff2,eot,svg,jpg,png}\" dist/",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,8 +19,8 @@
     "@lexical/markdown": "0.12.5",
     "@lexical/react": "0.12.5",
     "@lexical/rich-text": "0.12.5",
-    "@payloadcms/bundler-webpack": "^1.0.7",
-    "@payloadcms/db-mongodb": "1.0.3",
+    "@payloadcms/bundler-webpack": "^1.0.3",
+    "@payloadcms/db-mongodb": "^1.0.3",
     "@payloadcms/richtext-lexical": "0.5.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
@@ -84,7 +84,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "jsonwebtoken": "^9.0.0",
-    "jws": "^4.0.0",
-    "jwa": "^2.0.0"
+  "jws": "^4.0.0",
+  "jwa": "^2.0.0"
   }
 }

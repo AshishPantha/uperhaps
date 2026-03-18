@@ -1,0 +1,106 @@
+.rich-text-content h1 { font-size: 2.5em !important; text-align: center !important; }
+.rich-text-content h2 { font-size: 2em !important; }
+.rich-text-content h3 { font-size: 1.75em !important; }
+.rich-text-content h4 { font-size: 1.5em !important; }
+.rich-text-content h5 { font-size: 1.25em !important; }
+.rich-text-content h6 { font-size: 1em !important; }
+
+.rich-text-content strong,
+.rich-text-content b { font-weight: 700 !important; }
+
+.rich-text-content em,
+.rich-text-content i { font-style: italic !important; }
+
+.rich-text-content u { text-decoration: underline !important; }
+
+.rich-text-content s,
+.rich-text-content strike,
+.rich-text-content del { text-decoration: line-through !important; }
+
+.rich-text-content code {
+  font-family: monospace;
+  background-color: #f4f4f4;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.rich-text-content pre {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+.rich-text-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.rich-text-content ul,
+.rich-text-content ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.rich-text-content li {
+  margin-bottom: 0.5em;
+}
+
+.rich-text-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.rich-text-content a:hover {
+  text-decoration: none;
+}
+
+/* Text alignment - CSS classes */
+.rich-text-content .text-left,
+.rich-text-content p.text-left,
+.rich-text-content div.text-left { text-align: left !important; }
+
+.rich-text-content .text-center,
+.rich-text-content p.text-center,
+.rich-text-content div.text-center { text-align: center !important; }
+
+.rich-text-content .text-right,
+.rich-text-content p.text-right,
+.rich-text-content div.text-right { text-align: right !important; }
+
+.rich-text-content .text-justify,
+.rich-text-content p.text-justify,
+.rich-text-content div.text-justify { 
+  text-align: justify !important;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+}
+
+/* Text alignment - inline styles (Lexical often uses these) */
+.rich-text-content [style*="text-align: left"],
+.rich-text-content [style*="text-align:left"] { text-align: left !important; }
+
+.rich-text-content [style*="text-align: center"],
+.rich-text-content [style*="text-align:center"] { text-align: center !important; }
+
+.rich-text-content [style*="text-align: right"],
+.rich-text-content [style*="text-align:right"] { text-align: right !important; }
+
+.rich-text-content [style*="text-align: justify"],
+.rich-text-content [style*="text-align:justify"] { 
+  text-align: justify !important;
+  hyphens: auto;
+}
+
+/* Paragraph styling */
+.rich-text-content p {
+  font-size: 2.125em;
+  line-height: 2.6;
+  margin-bottom: 2em;
+}

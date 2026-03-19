@@ -201,7 +201,7 @@ const ContentContextButton = ({
                 
                 {displayWordCount > 0 && (
       <div className="space-y-1">
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <PenSquare className="h-4 w-4 text-gray-600" />
           <h4 className="text-sm font-medium text-gray-600">
             Word Count
@@ -209,7 +209,7 @@ const ContentContextButton = ({
         </div>
         <div className="text-sm text-gray-600 bg-white/10 p-2 rounded">
           {displayWordCount.toLocaleString()} words
-        </div>
+        </div> */}
       </div>
     )}
               {context && (

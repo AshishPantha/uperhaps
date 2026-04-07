@@ -146,10 +146,12 @@ const Page = () => {
                           
                           {/* Product Description */}
                           <div className='mt-4'>
-                            
-                            <StyledProductDescription descriptionHtml={ 
+                            <StyledProductDescription
                               //@ts-ignore
-                               product.description_html as string}  />
+                              descriptionHtml={product.description_html}
+                              //@ts-ignore
+                              descriptionRichText={product.description}
+                            />
                           </div>
                         </div>
                       </li>

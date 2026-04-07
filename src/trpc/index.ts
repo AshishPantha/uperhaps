@@ -3,7 +3,6 @@ import { publicProcedure, router } from './trpc';
 import { QueryValidator } from '../lib/validators/query-validator';
 import { getPayloadClient } from '../get-payload';
 import { authRouter } from './auth-router';
-import { TRPCError } from '@trpc/server';
 
 export const appRouter = router({
   auth: authRouter,
@@ -40,58 +39,6 @@ export const appRouter = router({
             userAgent,
           },
         });
-
-        const allEvents = await payload.find({
-          collection: 'analytics',
-          where: {
-            product: { equals: input.productId },
-          },
-          limit: 0,
-        })
-
-        const uniqueSessions = new Set(allEvents.docs.map((d: any) => d.sessionId)).size
-        const totalViews = allEvents.docs.filter((d: any) => d.eventType === 'view').length
-        const readCount = allEvents.docs.filter((d: any) => d.eventType === 'read').length
-        const completionCount = allEvents.docs.filter((d: any) => d.eventType === 'complete').length
-        const lastUpdated = new Date().toISOString()
-
-        const existing = await payload.find({
-          collection: 'content-analytics',
-          where: {
-            product: { equals: input.productId },
-          },
-          limit: 1,
-          overrideAccess: true,
-        })
-
-        if (existing.docs.length > 0) {
-          await payload.update({
-            collection: 'content-analytics',
-            id: existing.docs[0].id,
-            data: {
-              product: input.productId,
-              totalViews,
-              uniqueViews: uniqueSessions,
-              readCount,
-              completionCount,
-              lastUpdated,
-            },
-            overrideAccess: true,
-          })
-        } else {
-          await payload.create({
-            collection: 'content-analytics',
-            data: {
-              product: input.productId,
-              totalViews,
-              uniqueViews: uniqueSessions,
-              readCount,
-              completionCount,
-              lastUpdated,
-            },
-            overrideAccess: true,
-          })
-        }
 
         return { success: true };
       } catch (error) {

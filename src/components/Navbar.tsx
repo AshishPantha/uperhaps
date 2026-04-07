@@ -3,14 +3,18 @@ import MaxWidthWrapper from './MaxWidthWrapper'
 import NavItems from './NavItems'
 import { buttonVariants } from './ui/button'
 import Cart from './Cart'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { getServerSideUser } from '@/lib/payload-utils'
 import UserAccountNav from './UserAccountNav'
 import MobileNav from './MobileNav'
 
 const Navbar = async () => {
   const nextCookies = cookies()
-  const { user } = await getServerSideUser(nextCookies)
+  const nextHeaders = headers()
+  const protocol = nextHeaders.get('x-forwarded-proto') ?? 'http'
+  const host = nextHeaders.get('host')
+  const serverURL = host ? `${protocol}://${host}` : process.env.NEXT_PUBLIC_SERVER_URL
+  const { user } = await getServerSideUser(nextCookies, serverURL)
 
   return (
     <div className='sticky z-50 top-0 inset-x-0 h-16'>

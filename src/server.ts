@@ -30,6 +30,9 @@ export type WebhookRequest = IncomingMessage & {
   rawBody: Buffer
 }
 
+const isMongoObjectId = (value: unknown): value is string =>
+  typeof value === 'string' && /^[a-f0-9]{24}$/i.test(value)
+
 const backfillContentAnalytics = async (payload: any) => {
   const [analyticsCount, contentCount] = await Promise.all([
     payload.find({ collection: 'analytics', limit: 0 }),
@@ -39,6 +42,8 @@ const backfillContentAnalytics = async (payload: any) => {
   if (contentCount?.docs?.length > 0) {
     for (const doc of contentCount.docs as any[]) {
       if (!doc.product) continue
+      if (!isMongoObjectId(doc.product)) continue
+
       const productDoc = await payload.find({
         collection: 'products',
         where: { id: { equals: doc.product } },
@@ -82,7 +87,7 @@ const backfillContentAnalytics = async (payload: any) => {
         ? doc.product
         : doc.product?.id || doc.product?.value
 
-    if (!productId) continue
+    if (!isMongoObjectId(productId)) continue
 
     const existing = byProduct.get(productId) ?? {
       sessions: new Set<string>(),

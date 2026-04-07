@@ -1,20 +1,19 @@
-import { CollectionConfig } from 'payload/types';
-import { PRODUCT_CATEGORIES, PRODUCT_THEMES } from '../../config';
-import { Product } from '../../payload-types';
-import { BeforeChangeHook } from 'payload/dist/collections/config/types';
-import { lexicalEditor, HTMLConverterFeature, AlignFeature } from '@payloadcms/richtext-lexical';
+import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload/types'
+import { lexicalEditor, HTMLConverterFeature, AlignFeature } from '@payloadcms/richtext-lexical'
+import { PRODUCT_CATEGORIES, PRODUCT_THEMES } from '../../config'
+import { Product } from '../../payload-types'
 
-const addUser: BeforeChangeHook<Product> = async ({ req, data }) => {
-  const user = req.user;
-  return { ...data, user: user.id };
-};
+const addUser: CollectionBeforeChangeHook<Product> = async ({ req, data }) => {
+  const user = req.user
+  return { ...data, user: user.id }
+}
 
-const updateFieldsBeforeChange: BeforeChangeHook<Product> = async ({ data, operation }) => {
+const updateFieldsBeforeChange: CollectionBeforeChangeHook<Product> = async ({ data, operation }) => {
   if (operation === 'create' || !data.publishedDate) {
-    data.publishedDate = new Date().toISOString();
+    data.publishedDate = new Date().toISOString()
   }
-  return data;
-};
+  return data
+}
 
 
 export const Products: CollectionConfig = {

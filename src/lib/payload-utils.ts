@@ -3,22 +3,40 @@ import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adap
 import { NextRequest } from 'next/server'
 
 export const getServerSideUser = async (
-  cookies: NextRequest['cookies'] | ReadonlyRequestCookies
+  cookies: NextRequest['cookies'] | ReadonlyRequestCookies,
+  serverURL?: string
 ) => {
   const token = cookies.get('payload-token')?.value
-
-  const meRes = await fetch(
-    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/me`,
-    {
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    }
-  )
-
-  const { user } = (await meRes.json()) as {
-    user: User | null
+  if (!token) {
+    return { user: null }
   }
 
-  return { user }
+  const resolvedServerURL = serverURL || process.env.NEXT_PUBLIC_SERVER_URL
+  if (!resolvedServerURL) {
+    return { user: null }
+  }
+
+  try {
+    const meRes = await fetch(
+      `${resolvedServerURL}/api/users/me`,
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+        cache: 'no-store',
+      }
+    )
+
+    if (!meRes.ok) {
+      return { user: null }
+    }
+
+    const { user } = (await meRes.json()) as {
+      user: User | null
+    }
+
+    return { user }
+  } catch {
+    return { user: null }
+  }
 }

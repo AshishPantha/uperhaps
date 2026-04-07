@@ -1,10 +1,17 @@
 import React from 'react';
+import { getDescriptionHtml } from '@/lib/richtext'
 
 interface StyledProductDescriptionProps {
-  descriptionHtml: string;
+  descriptionHtml?: unknown;
+  descriptionRichText?: unknown;
 }
 
-const StyledProductDescription: React.FC<StyledProductDescriptionProps> = ({ descriptionHtml }) => {
+const StyledProductDescription: React.FC<StyledProductDescriptionProps> = ({
+  descriptionHtml,
+  descriptionRichText,
+}) => {
+  const html = getDescriptionHtml(descriptionHtml, descriptionRichText)
+
   return (
     <div className="relative p-6 rounded-lg overflow-hidden">
       {/* Background fading effect */}
@@ -19,7 +26,7 @@ const StyledProductDescription: React.FC<StyledProductDescriptionProps> = ({ des
       {/* Content */}
       <div 
         className="relative prose prose-sm max-w-none text-gray-700"
-        dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+        dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
   );

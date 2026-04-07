@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "module": "CommonJS",
     "moduleResolution": "node",
+    "baseUrl": ".",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -21,9 +22,11 @@
       }
     ],
     "paths": {
+      "payload": ["./node_modules/payload/dist/index.d.ts"],
+      "payload/*": ["./node_modules/payload/*"],
       "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "build", ".next"]
 }

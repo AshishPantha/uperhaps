@@ -10,7 +10,7 @@ type AnalyticsState = {
 
 const getOrCreateSessionId = (): string => {
   if (typeof window === 'undefined') return ''
-  
+
   let sessionId = localStorage.getItem('analytics_session')
   if (!sessionId) {
     sessionId = crypto.randomUUID()
@@ -42,16 +42,14 @@ export const useAnalyticsStore = create<AnalyticsState>()(
 export function useTrackView(productId: string) {
   const trackViewMutation = trpc.trackView.useMutation()
   const hasTracked = useRef(false)
-  const { getSessionId } = useAnalyticsStore()
+  const getSessionId = useAnalyticsStore((state) => state.getSessionId)
 
   useEffect(() => {
     if (hasTracked.current || !productId) return
-    
+
     hasTracked.current = true
     const sessionId = getSessionId()
-    
-    console.log('Tracking view for product:', productId, 'session:', sessionId)
-    
+
     trackViewMutation.mutate({
       productId,
       sessionId,
@@ -60,20 +58,20 @@ export function useTrackView(productId: string) {
       userAgent:
         typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
     })
-  }, [productId])
+  }, [getSessionId, productId, trackViewMutation])
 }
 
 export function useTrackRead(productId: string) {
   const trackViewMutation = trpc.trackView.useMutation()
   const hasTracked = useRef(false)
-  const { getSessionId } = useAnalyticsStore()
+  const getSessionId = useAnalyticsStore((state) => state.getSessionId)
 
   return () => {
     if (hasTracked.current || !productId) return
-    
+
     hasTracked.current = true
     const sessionId = getSessionId()
-    
+
     trackViewMutation.mutate({
       productId,
       sessionId,
@@ -88,14 +86,14 @@ export function useTrackRead(productId: string) {
 export function useTrackComplete(productId: string) {
   const trackViewMutation = trpc.trackView.useMutation()
   const hasTracked = useRef(false)
-  const { getSessionId } = useAnalyticsStore()
+  const getSessionId = useAnalyticsStore((state) => state.getSessionId)
 
   return () => {
     if (hasTracked.current || !productId) return
-    
+
     hasTracked.current = true
     const sessionId = getSessionId()
-    
+
     trackViewMutation.mutate({
       productId,
       sessionId,

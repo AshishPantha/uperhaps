@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import StyledProductDescription from '@/components/ui/styledPD'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import ReadingRecommendations from '@/components/ReadingR'
+// import ReadingRecommendations from '@/components/ReadingR'
 
 const Page = () => {
   const { items, removeItem, validateItems } = useCart()
@@ -163,7 +163,7 @@ const Page = () => {
 
             {/* Donation Section */}
             <div className='mt-8'>
-             <ReadingRecommendations/>
+             {/* <ReadingRecommendations/> */}
             </div>
           </div>
         </div>

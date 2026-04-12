@@ -67,7 +67,7 @@ const Page = () => {
                       alt='empty shopping cart hippo'
                     />
                   </div>
-                  <h3 className='font-semibold text-2xl'>You have no bookmarks yet 😢</h3>
+                  <h3 className='font-semibold text-2xl'>You have no Favourites yet 😢</h3>
                   <p className='text-muted-foreground text-center'>
                     Whoops! Nothing to show here yet.
                   </p>

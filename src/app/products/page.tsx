@@ -6,20 +6,37 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import ProductReel from '@/components/ProductReel'
 import { PRODUCT_CATEGORIES } from '@/config'
 
-type Param = string | string[] | undefined
+type CategoryValue = 'poems' | 'novels' | 'miscellaneous'
+type SortOption = 'recent' | 'oldest' | 'alphabetical' | 'reverse-alphabetical' | 'random' | undefined
 
-const parse = (param: string | null): string | undefined => {
-  return param ?? undefined
+const parseCategory = (param: string | null): CategoryValue | undefined => {
+  if (param === null) return undefined;
+  const value = param;
+  const validCategories: CategoryValue[] = ['poems', 'novels', 'miscellaneous'];
+  if (value && validCategories.includes(value as CategoryValue)) {
+    return value as CategoryValue;
+  }
+  return undefined;
+}
+
+const parseSort = (param: string | null): SortOption => {
+  if (param === null) return undefined;
+  const value = param;
+  const validSorts: SortOption[] = ['recent', 'oldest', 'alphabetical', 'reverse-alphabetical', 'random'];
+  if (value && validSorts.includes(value as SortOption)) {
+    return value as SortOption;
+  }
+  return undefined;
 }
 
 const ProductsPage = () => {
   const searchParams = useSearchParams()
   const [key, setKey] = useState(Date.now())
 
-  const sort = parse(searchParams.get('sort'))
-  const category = parse(searchParams.get('category'))
-  const author = parse(searchParams.get('author'))
-  const theme = parse(searchParams.get('theme'))
+  const sort = parseSort(searchParams.get('sort'))
+  const category = parseCategory(searchParams.get('category'))
+  const author = searchParams.get('author') ?? undefined
+  const theme = searchParams.get('theme') ?? undefined
 
   const label = PRODUCT_CATEGORIES.find(
     ({ value }) => value === category
@@ -46,10 +63,7 @@ const ProductsPage = () => {
           author,
           theme,
           limit: 40,
-          sort:
-            sort === 'recent' || sort === 'oldest'
-              ? sort
-              : undefined,
+          sort,
         }}
       />
     </MaxWidthWrapper>

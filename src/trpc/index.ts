@@ -198,7 +198,7 @@ export const appRouter = router({
         where: whereClause,
         sort: sortOption,
         depth: 1,
-        limit: limit * 2, // Fetch more items than needed
+        limit: limit * 4, // Fetch more items than needed
         page,
       });
 

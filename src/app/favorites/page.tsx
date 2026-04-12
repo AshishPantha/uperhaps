@@ -161,10 +161,7 @@ const Page = () => {
               )}
             </div>
 
-            {/* Donation Section */}
-            <div className='mt-8'>
 
-            </div>
           </div>
         </div>
       </div>

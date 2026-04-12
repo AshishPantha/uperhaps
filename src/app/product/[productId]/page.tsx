@@ -15,12 +15,13 @@ import ElegantBreadcrumbs from '@/components/ElegantBreadcrums'
 import fetch from 'node-fetch';
 import ContentContextButton from '@/components/ContentContextButton'
 import AnalyticsTracker from '@/components/AnalyticsTracker'
+import { getDescriptionHtml } from '@/lib/richtext'
 
 interface Product {
   id: string;
   name: string;
-  description: string;
-  description_html: string;
+  description: unknown;
+  description_html?: unknown;
   category: string;
   author: string;
   images: Array<{ image: string | { url: string } }>;
@@ -78,7 +79,8 @@ const Page = async ({ params }: PageProps) => {
     ({value}) => value === product.category
   )?.label
 
-  const wordCount = getWordCount(product.description_html as string);
+  const descriptionHtml = getDescriptionHtml(product.description_html, product.description)
+  const wordCount = getWordCount(descriptionHtml);
 
   // to view image 
   const validUrls = (product.images as Array<{ image: string | { url: string } }>).map(({ image }) =>
@@ -140,7 +142,10 @@ const Page = async ({ params }: PageProps) => {
 
         {/* Product Description */}
         <div className='mt-4 space-y-6'>
-          <StyledProductDescription descriptionHtml={product.description_html as string} />
+          <StyledProductDescription
+            descriptionHtml={product.description_html}
+            descriptionRichText={product.description}
+          />
         </div>
 
         {/* Author and Add to Cart Button */}
@@ -166,7 +171,7 @@ const Page = async ({ params }: PageProps) => {
     {/* Similar Products */}
     <ProductReel
       href='/products'
-      query={{ category: product.category as string, limit: 4 ,
+      query={{ category: product.category as string, limit: 8 ,
         excludeId: productId,
       }}
       title={`Similar ${label}`}

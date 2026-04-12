@@ -3,7 +3,7 @@ import { getServerSideUser } from './lib/payload-utils'
 
 export async function middleware(req: NextRequest) {
   const { nextUrl, cookies } = req
-  const { user } = await getServerSideUser(cookies)
+  const { user } = await getServerSideUser(cookies, nextUrl.origin)
 
   try {
     if (

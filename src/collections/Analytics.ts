@@ -1,7 +1,6 @@
-import { CollectionConfig } from 'payload/types';
-import { AfterChangeHook } from 'payload/dist/collections/config/types';
+import type { CollectionAfterChangeHook, CollectionConfig } from 'payload/types'
 
-const updateProductStats: AfterChangeHook = async ({ req, doc, operation }) => {
+const updateProductStats: CollectionAfterChangeHook = async ({ req, doc, operation }) => {
   if (operation !== 'create' || !doc.product) return
 
   const payload = req.payload
@@ -158,4 +157,4 @@ export const Analytics: CollectionConfig = {
     },
   ],
   timestamps: true,
-};
+}

@@ -1,3 +1,5 @@
+'use client'
+
 import { Product } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import { Skeleton } from './ui/skeleton'

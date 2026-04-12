@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import StyledProductDescription from '@/components/ui/styledPD'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import ReadingRecommendations from '@/components/ReadingR'
+
 
 const Page = () => {
   const { items, removeItem, validateItems } = useCart()
@@ -67,7 +67,7 @@ const Page = () => {
                       alt='empty shopping cart hippo'
                     />
                   </div>
-                  <h3 className='font-semibold text-2xl'>You have no bookmarks yet 😢</h3>
+                  <h3 className='font-semibold text-2xl'>You have no Favourites yet 😢</h3>
                   <p className='text-muted-foreground text-center'>
                     Whoops! Nothing to show here yet.
                   </p>
@@ -146,10 +146,12 @@ const Page = () => {
                           
                           {/* Product Description */}
                           <div className='mt-4'>
-                            
-                            <StyledProductDescription descriptionHtml={ 
+                            <StyledProductDescription
                               //@ts-ignore
-                               product.description_html as string}  />
+                              descriptionHtml={product.description_html}
+                              //@ts-ignore
+                              descriptionRichText={product.description}
+                            />
                           </div>
                         </div>
                       </li>
@@ -159,10 +161,7 @@ const Page = () => {
               )}
             </div>
 
-            {/* Donation Section */}
-            <div className='mt-8'>
-             <ReadingRecommendations/>
-            </div>
+
           </div>
         </div>
       </div>
